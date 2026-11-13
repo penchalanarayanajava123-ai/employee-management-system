@@ -1,0 +1,8 @@
+C:\Users\penchalanarayana\Downloads\employee-management-system\src\main\java\com\example\employeemanagement\controller\EmployeeController.java
+C:\Users\penchalanarayana\Downloads\employee-management-system\src\main\java\com\example\employeemanagement\dto\EmployeeRequest.java
+C:\Users\penchalanarayana\Downloads\employee-management-system\src\main\java\com\example\employeemanagement\EmployeeManagementApplication.java
+C:\Users\penchalanarayana\Downloads\employee-management-system\src\main\java\com\example\employeemanagement\entity\Employee.java
+C:\Users\penchalanarayana\Downloads\employee-management-system\src\main\java\com\example\employeemanagement\exception\DuplicateEmailException.java
+C:\Users\penchalanarayana\Downloads\employee-management-system\src\main\java\com\example\employeemanagement\exception\ResourceNotFoundException.java
+C:\Users\penchalanarayana\Downloads\employee-management-system\src\main\java\com\example\employeemanagement\repository\EmployeeRepository.java
+C:\Users\penchalanarayana\Downloads\employee-management-system\src\main\java\com\example\employeemanagement\service\EmployeeService.java
