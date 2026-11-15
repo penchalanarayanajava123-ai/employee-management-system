@@ -24,6 +24,13 @@ public class EmployeeController {
     public Employee create(@Valid @RequestBody EmployeeRequest request) {
         return employeeService.create(request);
     }
+    @GetMapping("/api/test")
+    public String testApi() {
+
+        System.out.println("Jenkins Pipeline Test API Called Successfully!");
+
+        return "Hello! Spring Boot REST API is Working Successfully!";
+    }
 
     @GetMapping
     public List<Employee> getAll() {
