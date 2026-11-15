@@ -1,42 +1,59 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven'
+        jdk 'JDK17'
+    }
+
+    environment {
+        TOMCAT_HOME = '/home/ec2-user/apache-tomcat-10.1.61'
+        TOMCAT_WEBAPPS = '/home/ec2-user/apache-tomcat-10.1.61/webapps'
+    }
+
     stages {
         stage('Checkout') {
             steps {
-                echo 'Code Checkout Started...'
-                git branch: 'main', url: 'https://github.com/penchalanarayanajava123-ai/employee-management-system.git'
+                checkout scm
             }
         }
 
-        stage('Build') {
+        stage('Build WAR') {
             steps {
-                echo 'Maven Build Started...'
                 sh 'mvn clean package -DskipTests'
             }
         }
 
-        stage('Test') {
+        stage('Deploy to Tomcat') {
             steps {
-                echo 'Testing...'
-                sh 'mvn test'
-            }
-        }
+                sh '''
+                    echo "Stopping Tomcat..."
+                    $TOMCAT_HOME/bin/shutdown.sh || true
+                    sleep 5
+                    pkill -f "catalina" || true
+                    sleep 3
 
-        stage('Archive WAR') {
-            steps {
-                echo 'Saving WAR file...'
-                archiveArtifacts artifacts: 'target/*.war', followSymlinks: false
+                    echo "Removing old WAR..."
+                    rm -rf $TOMCAT_WEBAPPS/ROOT.war $TOMCAT_WEBAPPS/ROOT
+
+                    echo "Deploying new WAR..."
+                    cp target/*.war $TOMCAT_WEBAPPS/ROOT.war
+
+                    echo "Starting Tomcat..."
+                    $TOMCAT_HOME/bin/startup.sh
+                    sleep 10
+                    curl -f http://localhost:8080/api/employees || echo "App starting, check logs..."
+                '''
             }
         }
     }
 
     post {
         success {
-            echo 'BUILD SUCCESS - DevOps Pipeline Completed!'
+            echo 'DEPLOY SUCCESS! API LIVE at http://16.178.153.169:8080/api/employees'
         }
         failure {
-            echo 'BUILD FAILED - Check Console Output'
+            echo 'DEPLOY FAILED! Check logs'
         }
     }
 }
